@@ -1,0 +1,37 @@
+*
+* Model: PS2501A
+*
+* This SPICE model is intended to simulate the device behavior at Ta=25C within
+* the maximum ratings as called out in the data sheet.
+*
+* Please note that the model can't duplicate exact device performance in the
+* real world under all conditions and they can't replace the breadboarding
+* for final design verification.
+*
+* Note: CTR is modeled base on sample B in the data sheet. Please refer to the
+* data sheet for details.
+*********************************************************************************
+* A = PIN 1: diode anode
+* K = PIN 2: diode cathode
+* E = PIN 3: BJT emitter
+* C = PIN 4: BJT collector
+.SUBCKT PS2501A A K E C
+D1 A D LED
+Vsense D K 0
+Hd   R 0 Vsense 1
+Rd   R T 100k
+Cd   T 0 20p
+Gctr C B TABLE
++ {If(V(T)<3m,
++ ((-23400000000*PWR(V(T),5)+228300000*PWR(V(T),4)
++ -889400*PWR(V(T),3)+1829*PWR(V(T),2)+0.09247*V(T)-0.000008273)*0.98/550),
++ ((-933100*PWR(V(T),5)+125600*PWR(V(T),4)-5533*PWR(V(T),3)+60.64*PWR(V(T),2)+
++ 1.944*V(T)-0.0006739)*0.98/550))}
++ (0,0) (0.1m, 0.1m)
+Q1 C B E detector
+.model LED D IS=1p N=1.999644 RS=0 BV=6 IBV=10u
++ CJO=10p EG=1.424 TT=500n
+.model detector NPN IS=100p BF=550 NF=1.3 BR=50 TF=2n TR=1.5n
++ CJE=15p CJC=20p VAF=100 ISS=0 CJS=1p
+.ends
+*

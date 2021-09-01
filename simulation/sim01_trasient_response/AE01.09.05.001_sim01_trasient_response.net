@@ -1,0 +1,13 @@
+*trasient response
+.include ../AE01.09.05.001.cir
+.tran 0 {x_base} 0 startup uic
+.param Rk=210
+.param Rc=500
+.param VISO=5
+.param VPUL=3.3
+.param tr=3u
+.param tf=5u
+.param duty=20m
+.param cycle=40m
+.param x_base=120m
+.param delay=10m

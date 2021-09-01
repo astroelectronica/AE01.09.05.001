@@ -1,0 +1,29 @@
+*trasient response
+*
+*time reference
+.meas tref1 find time when V(/out)=(V(vdd)*0.9) cross=7
+.meas tref2 find time when V(/out)=(V(vdd)*0.9) cross=8
+.meas tref3 find time when V(/out)=(V(vdd)*0.9) cross=9
+.meas tref4 param ((tref2-tref1)/2)+tref1
+*
+*frequency and duty
+.meas freq_sw param (1/(tref3-tref1))
+.meas time_cycle param (1/freq_sw)
+.meas time_duty param (tref2-tref1)
+.meas %_duty param ((time_duty*100)/time_cycle)
+*
+*out
+.meas voltage_vout find V(/out) when time=tref4
+.meas voltage_Rc find V(vdd,/out) when time=tref4
+.meas current_collector find Ix(u1:C) when time=tref4
+.meas power_Rc param (voltage_Rc*current_collector)
+*
+*in
+.meas voltage_vin find V(/in) when time=tref4
+.meas voltage_Rk find V(/k) when time=tref4
+.meas current_anode find Ix(u1:A) when time=tref4
+.meas power_Rk param (voltage_Rk*current_anode)
+.meas voltage_ak find V(/in,/k) when time=tref4
+*
+*CTR
+.meas CTR param ((current_collector/current_anode)*100)
